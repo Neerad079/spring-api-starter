@@ -10,5 +10,5 @@ public class HomeController {
     public String index(Model model){
         model.addAttribute("name", "Neerad");
         return "index"; // removed the .html as we are now working with Thymleaf template
-}
+    }
 }
