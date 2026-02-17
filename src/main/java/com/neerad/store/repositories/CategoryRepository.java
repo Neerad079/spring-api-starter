@@ -1,6 +1,6 @@
-package com.codewithmosh.store.repositories;
+package com.neerad.store.repositories;
 
-import com.codewithmosh.store.entities.Category;
+import com.neerad.store.entities.Category;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CategoryRepository extends CrudRepository<Category, Byte> {
