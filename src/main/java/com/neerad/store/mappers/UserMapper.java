@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    @Mapping(target= "createdAt" ,expression = "java(java.time.LocalDateTime.now())")
     // Maps object automatically during compile time , no need to map object manually
     UserDto toDto(User user);
 }
