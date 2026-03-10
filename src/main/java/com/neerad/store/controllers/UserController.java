@@ -27,7 +27,7 @@ public class UserController {
         we don't add a sort parameter it will throw an error
         defaultValue = ""  -: as the contains(sort) method below doesn't take null value we have to provide default value an empty String
         name = "sort"      -: tells Spring: ignore the variable name. Look for ?sort= in the URL instead
-         *
+         */
 
         if(!Set.of("name", "email").contains(sortBy))
             sortBy ="name";
