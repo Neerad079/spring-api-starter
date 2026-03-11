@@ -10,6 +10,6 @@ import org.mapstruct.Mapping;
 // componentModel = "spring" :- Adds @Component so Spring can inject it (Makes it a Spring Bean)
 
 public interface ProductMapper {
-    @Mapping(source = "category.id",target = "CategoryId")
+    @Mapping(source = "category.id",target = "categoryId")
     ProductDto toDto(Product product);
 }

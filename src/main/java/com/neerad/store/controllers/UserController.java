@@ -1,5 +1,6 @@
 package com.neerad.store.controllers;
 
+import com.neerad.store.dtos.RegisterUserRequest;
 import com.neerad.store.dtos.UserDto;
 import com.neerad.store.mappers.UserMapper;
 import com.neerad.store.repositories.UserRepository;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Set;
 
@@ -56,5 +58,18 @@ public class UserController {
 //       var userDto = new UserDto(user.getId(),user.getName(),user.getEmail());
         var userDto = userMapper.toDto(user);
        return ResponseEntity.ok(userDto);
+    }
+
+    @PostMapping()
+    public ResponseEntity<UserDto> createUser(
+            @RequestBody RegisterUserRequest request,
+            UriComponentsBuilder uriBuilder) {
+    //@RequestBody tells Spring:Take the raw JSON from the HTTP request body and convert it into a UserDto Java object
+        // ResponseEntity : status 201 i.e. successfully created
+        var user = userMapper.toEntity(request);
+        userRepository.save(user);
+        var userDto = userMapper.toDto(user);
+        var uri=uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
+        return ResponseEntity.created(uri).body(userDto);
     }
 }
