@@ -1,6 +1,7 @@
 package com.neerad.store.controllers;
 
 import com.neerad.store.dtos.RegisterUserRequest;
+import com.neerad.store.dtos.UpdateUserRequest;
 import com.neerad.store.dtos.UserDto;
 import com.neerad.store.mappers.UserMapper;
 import com.neerad.store.repositories.UserRepository;
@@ -71,5 +72,18 @@ public class UserController {
         var userDto = userMapper.toDto(user);
         var uri=uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
         return ResponseEntity.created(uri).body(userDto);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(
+            @PathVariable Long id,
+            @RequestBody UpdateUserRequest request
+    ){
+       var user = userRepository.findById(id).orElse(null);
+       if(user == null) {
+           return ResponseEntity.notFound().build();
+       }
+       userMapper.updateEntity(request,user);
+       userRepository.save(user);
+       return ResponseEntity.ok(userMapper.toDto(user));
     }
 }
