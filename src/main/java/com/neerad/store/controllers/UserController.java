@@ -1,5 +1,6 @@
 package com.neerad.store.controllers;
 
+import com.neerad.store.dtos.ChangePasswordRequest;
 import com.neerad.store.dtos.RegisterUserRequest;
 import com.neerad.store.dtos.UpdateUserRequest;
 import com.neerad.store.dtos.UserDto;
@@ -7,6 +8,7 @@ import com.neerad.store.mappers.UserMapper;
 import com.neerad.store.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -97,4 +99,22 @@ public class UserController {
         return ResponseEntity.noContent().build();
         // .noContent():- HTTP status = 204 NO content : Request succeeded but there's nothing to return
     }
-}
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable Long id,
+            @RequestBody ChangePasswordRequest request
+    ){
+        var user = userRepository.findById(id).orElse(null);
+        if(user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if(!user.getPassword().equals(request.getOldPassword())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            // checks if the old password entered by the user is correct or not , if not then it doesn't allow to change it
+            // HTTP response : 401 Unauthorized
+        }
+        user.setPassword(request.getNewPassword());
+        userRepository.save(user);
+        return ResponseEntity.noContent().build();
+        }
+    }
