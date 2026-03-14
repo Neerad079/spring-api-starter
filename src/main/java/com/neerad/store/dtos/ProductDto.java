@@ -1,5 +1,6 @@
 package com.neerad.store.dtos;
 
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
